@@ -11,7 +11,7 @@ def get_image(filename: str) -> Image.Image:
     return img
 
 # crop image to largest square image and downgrade to target sizing for future use
-def reshape_image(img: Image.Image, target_size: int = 800) -> tuple[Image.Image, str]:
+def reshape_image(img: Image.Image, target_size: int = 800, img_dir: str = "images_generated/processed_input.jpg") -> tuple[Image.Image, str]:
     width, height = img.size
     min_dim = min(width, height)
 
@@ -22,7 +22,6 @@ def reshape_image(img: Image.Image, target_size: int = 800) -> tuple[Image.Image
 
     img_cropped = img.crop((left, top, right, bottom))
     img_resized = img_cropped.resize((target_size, target_size), Image.LANCZOS)
-    img_dir = "images_generated/processed_input.jpg"
     img_resized.save(img_dir)
     return img_resized, img_dir
 
