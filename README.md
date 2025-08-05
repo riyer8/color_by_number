@@ -2,11 +2,21 @@
 
 _Inspired by my new found summer hobby (I just wish I was coloring with color pencils instead of an Apple Pencil)._
 
-Below is the first iteration of my color by number
+**[Iteration 3] Bilateral Edge Detection & Improved Color Concatenation:**
 
-![Comparison of the color by numbers](images_generated/color_by_number_iter1.png "Side by side comparison of the color by number with original image, black and white image, and colored image, and color palette")
+![Comparison of the color by numbers](images_generated/current_color_by_number/color_by_number_comparison.png "Side by side comparison of the color by number with original image, black and white image, and colored image, and color palette")
+
+**[Iteration 2] Bilateral Edge Detection:**
+
+![Comparison of the color by numbers](images_generated/bilateral_edge_detection/color_by_number_comparison.png "Side by side comparison of the color by number with original image, black and white image, and colored image, and color palette")
+
+**[Iteration 1] Gaussian Edge Detection:**
+
+![Comparison of the color by numbers](images_generated/gaussian_edge_detection/color_by_number_comparison.png "Side by side comparison of the color by number with original image, black and white image, and colored image, and color palette")
 
 Note that there is a lot of distortion between the original image to the new image. Currently trying to fix it ✨
+
+When the edge detection is better, then the coloring is less precise.
 
 ---
 
