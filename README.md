@@ -14,9 +14,7 @@ _Inspired by my new found summer hobby (I just wish I was coloring with color pe
 
 ![Comparison of the color by numbers](images_generated/gaussian_edge_detection/color_by_number_comparison.png "Side by side comparison of the color by number with original image, black and white image, and colored image, and color palette")
 
-Note that there is a lot of distortion between the original image to the new image. Currently trying to fix it ✨
-
-When the edge detection is better, then the coloring is less precise.
+_Note that there is a lot of distortion between the original image to the new, color by number image. Currently trying to fix it ✨_
 
 ---
 

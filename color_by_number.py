@@ -2,9 +2,9 @@ from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
 import os
-from image_manipulation import get_image, reshape_image, get_rgb_data
-from edge_detection import detect_object_boundaries, create_final_borders, create_region_map
-from color_detection import reduce_colors, create_color_by_number, create_filled_image, create_color_palette_guide
+from image_manipulation import ImageManipulation
+from edge_detection import EdgeDetection
+from color_detection import ColorDetection
 
 def save_image(final_image: Image.Image, filled_image: Image.Image, color_guide: np.ndarray, new_img_folder: str) -> None:
     Image.fromarray(final_image).save(new_img_folder + "color_by_number_final.png")
@@ -21,7 +21,7 @@ def generate_plot(reshaped_img: Image.Image, final_image: Image.Image, filled_im
     
     plt.subplot(1, 4, 2)
     plt.imshow(final_image)
-    plt.title("Color by Number")
+    plt.title("Edge Detection")
     plt.axis('off')
     
     plt.subplot(1, 4, 3)
@@ -39,37 +39,40 @@ def generate_plot(reshaped_img: Image.Image, final_image: Image.Image, filled_im
     plt.show()
 
 def main(input_filename: str, num_colors: int = 8, min_region_size: int = 300, edge_threshold: int = 50, img_folder: str = ""):
-    
+    edge_detection = EdgeDetection()
+    color_detection = ColorDetection()
+    image_manipulation = ImageManipulation()
+
     new_img_dir = "images_generated/" + img_folder + "/"
 
     # Create directory if it doesn't exist
     os.makedirs(new_img_dir, exist_ok=True)
 
     print("🖼️ Loading and processing image...")
-    img = get_image(input_filename)
-    reshaped_img, _ = reshape_image(img, target_size=800, img_dir = new_img_dir)
-    pixels = get_rgb_data(reshaped_img)
+    img = image_manipulation.get_image(input_filename)
+    reshaped_img, _ = image_manipulation.reshape_image(img, target_size=800, img_dir = new_img_dir)
+    pixels = image_manipulation.get_rgb_data(reshaped_img)
     
     print("🔍 Detecting object boundaries...")
-    border_mask = detect_object_boundaries(pixels, edge_threshold)
+    border_mask = edge_detection.detect_object_boundaries(pixels, edge_threshold)
     
     print(f"🎨 Reducing to {num_colors} colors with improved K-means...")
-    labels, palette = reduce_colors(pixels, border_mask, num_colors=num_colors)
+    labels, palette = color_detection.reduce_colors(pixels, border_mask, num_colors=num_colors)
     
     print("🧩 Creating regions...")
-    region_map = create_region_map(labels, border_mask, min_region_size=min_region_size)
+    region_map = edge_detection.create_region_map(labels, border_mask, min_region_size=min_region_size)
     
     print("🖊️ Creating final borders...")
-    final_border_map = create_final_borders(region_map, border_mask, border_thickness=1)
+    final_border_map = edge_detection.create_final_borders(region_map, border_mask, border_thickness=1)
     
     print("🎯 Generating final color-by-number...")
-    final_image, color_mapping = create_color_by_number(region_map, labels, palette, final_border_map)
+    final_image, color_mapping = color_detection.create_color_by_number(region_map, labels, palette, final_border_map)
     
     print("🪄 Creating filled version...")
-    filled_image = create_filled_image(region_map, labels, palette, border_mask)
+    filled_image = color_detection.create_filled_image(region_map, labels, palette, border_mask)
     
     print("🗂️ Creating color guide...")
-    color_guide = create_color_palette_guide(palette, color_mapping, labels, region_map)
+    color_guide = color_detection.create_color_palette_guide(palette, color_mapping, labels, region_map)
     
     print("💾 Saving images...")
     save_image(final_image, filled_image, color_guide, new_img_dir)
